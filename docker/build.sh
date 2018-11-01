@@ -6,12 +6,18 @@
 
 set -e
 
-REPOSITORY="${REPOSITORY:-netdata}"
-
-VERSION=$(git tag --points-at)
+if [ "$1" == "" ]; then
+    VERSION=$(git tag --points-at)
+else
+    VERSION="$1"
+fi
 if [ "${VERSION}" == "" ]; then
     VERSION="latest"
 fi
+
+REPOSITORY="${REPOSITORY:-netdata}"
+
+echo "Building $VERSION of netdata container"
 
 declare -A ARCH_MAP
 ARCH_MAP=( ["i386"]="386" ["amd64"]="amd64" ["armhf"]="arm" ["aarch64"]="arm64")
